@@ -1,11 +1,15 @@
 package edu.ucmo.devet;
 
+import com.google.inject.Guice;
+import edu.ucmo.devet.db.dao.ReposDAO;
 import io.dropwizard.Application;
+import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.assets.AssetsBundle;
 import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.AtmosphereServlet;
+import org.jdbi.v3.core.Jdbi;
 
 import javax.servlet.ServletRegistration;
 
@@ -39,5 +43,10 @@ public class DeVetApplication extends Application<DeVetConfiguration> {
         
         // Serve API resources at /api path
         environment.jersey().setUrlPattern("/api/*");
+
+        Guice
+            .createInjector(new ApplicationModule(environment, configuration))
+            .getInstance(ApplicationRunner.class)
+            .run(environment, configuration);
     }
 }

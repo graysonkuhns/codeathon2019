@@ -1,25 +1,6 @@
-import '@babel/polyfill';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { registerWebSocket } from './api';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 
-function App() {
-    registerWebSocket(handleData);
+ReactDOM.render(<App />, document.getElementById('root'));
 
-    /**
-     * @param {import('./api').Data} data
-     */
-    function handleData(data) {
-        // eslint-disable-next-line no-console
-        console.log(data);
-    }
-
-    return (
-        <div>Hello World!</div>
-    )
-}
-
-ReactDOM.render(
-    <App />,
-    document.getElementById("root")
-);

@@ -3,6 +3,8 @@ package edu.ucmo.devet;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.assets.AssetsBundle;
+
 
 public class DeVetApplication extends Application<DeVetConfiguration> {
 
@@ -17,13 +19,15 @@ public class DeVetApplication extends Application<DeVetConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<DeVetConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(new AssetsBundle("/assets/dist", "/", "index.html"));
     }
 
     @Override
-    public void run(final DeVetConfiguration configuration,
-                    final Environment environment) {
-        // TODO: implement application
-    }
+    public void run(
+        final DeVetConfiguration configuration,
+        final Environment environment) {
 
+        // Serve API resources at /api path
+        environment.jersey().setUrlPattern("/api/*");
+    }
 }

@@ -1,11 +1,14 @@
 package edu.ucmo.devet;
 
+import edu.ucmo.devet.db.dao.ReposDAO;
 import io.dropwizard.Application;
+import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.assets.AssetsBundle;
 import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.AtmosphereServlet;
+import org.jdbi.v3.core.Jdbi;
 
 import javax.servlet.ServletRegistration;
 

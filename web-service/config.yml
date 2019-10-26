@@ -2,3 +2,10 @@ logging:
   level: INFO
   loggers:
     edu.ucmo.devet: DEBUG
+    
+
+database:
+  driverClass: org.mariadb.jdbc.Driver
+  user: admin
+  password: admin
+  url: jdbc:mariadb://127.0.0.1:3306/F19aviation

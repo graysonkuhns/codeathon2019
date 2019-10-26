@@ -1,8 +1,8 @@
 package edu.ucmo.devet.model;
 
 public class FileExtension {
-    private String extension;
-    private int language;
+    private final String extension;
+    private final int language;
 
     public FileExtension(String extension, int language) {
         this.extension = extension;
@@ -13,15 +13,7 @@ public class FileExtension {
         return extension;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
     public int getLanguage() {
         return language;
-    }
-
-    public void setLanguage(int language) {
-        this.language = language;
     }
 }

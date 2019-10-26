@@ -1,9 +1,9 @@
 package edu.ucmo.devet.model;
 
 public class Repository {
-    private int id;
-    private String user;
-    private String name;
+    private final int id;
+    private final String user;
+    private final String name;
 
     public Repository(int id, String user, String name) {
         this.id = id;
@@ -15,23 +15,11 @@ public class Repository {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getUser() {
         return user;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

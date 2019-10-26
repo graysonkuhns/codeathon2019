@@ -5,5 +5,5 @@ RUN  unlink /etc/localtime && \
      ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime
 
 # Copy in database initialization script
-RUN  mkdir -p /opt/virtual-dispatcher/database
-COPY ./init* /opt/virtual-dispatcher/database/
+RUN  mkdir -p /opt/devet/database
+COPY ./init* /opt/devet/database/

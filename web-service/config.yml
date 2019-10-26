@@ -6,6 +6,6 @@ logging:
 
 database:
   driverClass: org.mariadb.jdbc.Driver
-  user: admin
-  password: admin
-  url: jdbc:mariadb://127.0.0.1:3306/F19aviation
+  user: devet
+  password: devet
+  url: jdbc:mariadb://127.0.0.1:3306/devet

@@ -4,6 +4,10 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.assets.AssetsBundle;
+import org.atmosphere.cpr.ApplicationConfig;
+import org.atmosphere.cpr.AtmosphereServlet;
+
+import javax.servlet.ServletRegistration;
 
 
 public class DeVetApplication extends Application<DeVetConfiguration> {
@@ -27,6 +31,12 @@ public class DeVetApplication extends Application<DeVetConfiguration> {
         final DeVetConfiguration configuration,
         final Environment environment) {
 
+        AtmosphereServlet servlet = new AtmosphereServlet();
+        servlet.framework().addInitParameter(ApplicationConfig.WEBSOCKET_SUPPORT, "true");
+
+        ServletRegistration.Dynamic registration = environment.servlets().addServlet("atmosphere", servlet);
+        registration.addMapping("/websocket/*");
+        
         // Serve API resources at /api path
         environment.jersey().setUrlPattern("/api/*");
     }

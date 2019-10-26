@@ -21,7 +21,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /(node_modules|bower_components)/,
-                loaders: ['babel-loader', 'ts-loader']
+                loaders: ['babel-loader']
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,

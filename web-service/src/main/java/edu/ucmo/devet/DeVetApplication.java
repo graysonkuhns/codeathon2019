@@ -13,7 +13,6 @@ import org.jdbi.v3.core.Jdbi;
 
 import javax.servlet.ServletRegistration;
 
-
 public class DeVetApplication extends Application<DeVetConfiguration> {
 
     public static void main(final String[] args) throws Exception {

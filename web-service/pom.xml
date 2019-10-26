@@ -46,6 +46,20 @@
             <version>${dropwizard.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.dropwizard/dropwizard-jdbi3 -->
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-jdbi3</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.atmosphere/atmosphere-jersey -->
         <dependency>
             <groupId>org.atmosphere</groupId>
@@ -58,6 +72,21 @@
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-server</artifactId>
             <version>9.4.18.v20190429</version>
+        </dependency>
+
+        
+        <!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.inject.extensions/guice-assistedinject -->
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-assistedinject</artifactId>
+            <version>4.2.1</version>
         </dependency>
 
         <dependency>

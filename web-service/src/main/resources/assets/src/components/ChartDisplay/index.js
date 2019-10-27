@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Avatar, Grid, Typography, Slide, Card, CardContent } from '@material-ui/core';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { Grid, Typography, Slide, Card, CardContent } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-import Search from "../Search";
-import Title from "../Title";
+import Search from '../Search';
+import Title from '../Title';
+import Info from '../Info';
+import ProfileInfo from '../ProfileInfo'
 import { makeStyles } from '@material-ui/core/styles';
 import "chart.js";
 import { PieChart } from 'react-chartkick';
@@ -17,7 +20,8 @@ const useStyles = makeStyles(() => ({
         backgroundColor: "#efefef"
     },
     title: {
-        fontSize: "6vw"
+        fontSize: "6vw",
+        marginBottom: ".5rem"
     },
     card: {
         paddingTop: "2rem",
@@ -30,6 +34,9 @@ const useStyles = makeStyles(() => ({
     },
     searchBar: {
         marginTop: "2rem"
+    },
+    profile: {
+        marginTop: '.5rem'
     }
 
 }));
@@ -91,9 +98,10 @@ function ChartDisplay(props) {
                     <Search handleSearch={handleSearch} className={classes.searchBar} />
                 </Grid>
             </Grid>
-            <Slide in={!!data && data.length > 0 && !freezeData} timeout={1000} direction="up">
-
+            <Slide in={!!data && data.length > 0 && !freezeData} timeout={1000} direction="up" style={{ display: "none" }}>
                 <Grid justify="center" container spacing={3}>
+                    <ProfileInfo avatarUrl={props.data.avatar_url} description={props.data.bio}
+                        className={classes.profile} />
                     <Grid item xs={12} md={12} lg={6}>
                         <Card className={classes.card}>
                             <CardContent>
@@ -111,6 +119,7 @@ function ChartDisplay(props) {
                             </CardContent>
                         </Card>
                     </Grid>
+                    <Info />
                 </Grid>
             </Slide>
         </Paper>

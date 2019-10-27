@@ -34,6 +34,7 @@ public class WebsocketHandler implements AtmosphereHandler {
         atmosphereResource.setBroadcaster(broadcaster);
         atmosphereResource.suspend();
         
+        broadcastData(broadcasterFactory, data);
         startDataUpdate();
     }
 

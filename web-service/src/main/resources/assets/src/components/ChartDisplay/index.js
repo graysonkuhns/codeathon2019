@@ -47,7 +47,8 @@ function ChartDisplay(props) {
     const classes = useStyles();
 
     const [freezeData, setFreezeData] = useState(false);
-    const [data, setData] = useState();
+    const [data1, setData1] = useState();
+    const [data2, setData2] = useState();
     const [oldProps, setOldProps] = useState();
 
     useEffect(() => {
@@ -57,9 +58,58 @@ function ChartDisplay(props) {
     });
 
     function updateData() {
+        console.log(props.data);
         if (props.data && props.data.repositoryLanguages && !freezeData) {
-            const langs = props.data.repositoryLanguages;
-            setData(Object.keys(langs).map(key => [key, langs[key]]));
+            {
+                // Handle repository languages
+                const langs = props.data.repositoryLanguages;
+                const newData = Object.keys(langs).map(key => [key, langs[key]]);
+
+                /** @type {number[][]} */
+                const oldData = data1;
+
+                if (oldData) {
+                    newData.forEach(d => {
+                        // If the language already exists
+                        const oldLang = oldData.find(lang => lang[0] == d[0]);
+                        if (oldLang) {
+                            oldLang[1] = d[1];
+                        } else {
+                            oldData.push(d);
+                        }
+                    });
+
+                    setData1(oldData);
+                } else {
+                    setData1(newData);
+                }
+            }
+
+            {
+                // Handle commit languages
+                const langs = props.data.commitLanguages;
+                const newData = Object.keys(langs).map(key => [key, langs[key]]);
+
+                /** @type {number[][]} */
+                const oldData = data2;
+
+                if (oldData) {
+                    newData.forEach(d => {
+                        // If the language already exists
+                        const oldLang = oldData.find(lang => lang[0] == d[0]);
+                        if (oldLang) {
+                            oldLang[1] = d[1];
+                        } else {
+                            oldData.push(d);
+                        }
+                    });
+
+                    setData2(oldData);
+                } else {
+                    setData2(newData);
+                }
+            }
+
             setOldProps(props);
         }
     }
@@ -68,10 +118,11 @@ function ChartDisplay(props) {
      * @param {string} username
      */
     function handleSearch(username) {
-        if (data) {
+        if (data1 || data2) {
             setFreezeData(true);
             setTimeout(() => {
-                setData(undefined);
+                setData1(undefined);
+                setData2(undefined);
                 setFreezeData(false);
             }, 1000)
         }
@@ -91,14 +142,14 @@ function ChartDisplay(props) {
                     <Search handleSearch={handleSearch} className={classes.searchBar} />
                 </Grid>
             </Grid>
-            <Slide in={!!data && data.length > 0 && !freezeData} timeout={1000} direction="up">
+            <Slide in={((!!data1 && data1.length > 0) || (!!data2 && data2.length > 0)) && !freezeData} timeout={1000} direction="up">
 
                 <Grid justify="center" container spacing={3}>
                     <Grid item xs={12} md={12} lg={6}>
                         <Card className={classes.card}>
                             <CardContent>
                                 <Title>Owned Repositories</Title>
-                                <PieChart data={data} />
+                                <PieChart data={data1} />
                             </CardContent>
                         </Card>
                     </Grid>
@@ -106,8 +157,8 @@ function ChartDisplay(props) {
                     <Grid item xs={12} md={12} lg={6}>
                         <Card className={classes.card}>
                             <CardContent>
-                                <Title>Owned Repositories</Title>
-                                <PieChart data={data} />
+                                <Title>Contributed Code</Title>
+                                <PieChart data={data2} />
                             </CardContent>
                         </Card>
                     </Grid>

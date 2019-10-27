@@ -12,22 +12,24 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Singleton
 public class RepositoryDAO {
     
     private final Jdbi jdbi;
-    
+    private final LanguageDAO languageDAO;
+
     @Inject
-    public RepositoryDAO(final Jdbi jdbi){
+    public RepositoryDAO(Jdbi jdbi, LanguageDAO languageDAO) {
         this.jdbi = jdbi;
-        
-        jdbi.registerRowMapper(JoinRowMapper.forTypes(String.class, Long.class));
+        this.languageDAO = languageDAO;
     }
     
     public Map<String, Long> listLanguageCount(String username){
         Map<String, Long> languageCount = new HashMap<>();
+        
         jdbi.useHandle(handle -> handle
             .createQuery("SELECT l.name, rl.byte_count FROM repository_language AS rl JOIN language AS l " +
                 "WHERE l.id = rl.language AND rl.repository IN " +

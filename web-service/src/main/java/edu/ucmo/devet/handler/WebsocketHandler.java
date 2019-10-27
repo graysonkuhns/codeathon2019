@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import edu.ucmo.devet.db.dao.CommitDAO;
 import edu.ucmo.devet.db.dao.RepositoryDAO;
 import edu.ucmo.devet.model.GithubAnalysis;
 import org.atmosphere.cpr.*;
@@ -15,22 +16,22 @@ import java.util.TimerTask;
 
 @Singleton
 public class WebsocketHandler implements AtmosphereHandler {
-    private static final String BROADCASTER_NAME = "data";
     private BroadcasterFactory broadcasterFactory;
         
-    private RepositoryDAO repositoryDAO;
+    private final RepositoryDAO repositoryDAO;
+    private final CommitDAO commitDAO;
 
-    @Inject
-    public WebsocketHandler(RepositoryDAO repositoryDAO) {
-        this.repositoryDAO = repositoryDAO;
-    }
-
-//    private String data = "";
     private int broadcasterCounter = 0;
     
     private List<Timer> timers = new ArrayList<>();
     private List<Broadcaster> broadcasters = new ArrayList<>();
     private List<String> data = new ArrayList<>();
+
+    @Inject
+    public WebsocketHandler(RepositoryDAO repositoryDAO, CommitDAO commitDAO) {
+        this.repositoryDAO = repositoryDAO;
+        this.commitDAO = commitDAO;
+    }
 
     @Override
     public void onRequest(AtmosphereResource atmosphereResource) throws IOException {
@@ -86,7 +87,10 @@ public class WebsocketHandler implements AtmosphereHandler {
             public void run()
             {
                 try {
-                    String newData = new ObjectMapper().writeValueAsString(new GithubAnalysis(repositoryDAO.listLanguageCount(username)));
+                    String newData = new ObjectMapper().writeValueAsString(
+                        new GithubAnalysis(
+                            repositoryDAO.listLanguageCount(username),
+                            commitDAO.listCommitLanguageCount(username)));
                     if(!newData.equals(data.get(id))) {
                         broadcastData(String.valueOf(id), newData);
                     }

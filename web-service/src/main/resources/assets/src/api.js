@@ -1,5 +1,5 @@
 import '@babel/polyfill';
-//import * as $ from 'jquery';
+import * as $ from 'jquery';
 
 import * as socket from 'atmosphere.js';
 
@@ -8,6 +8,20 @@ import * as socket from 'atmosphere.js';
  * @property {string} languages
  */
 
+/**
+ * Send a request to get a Github analysis
+ * @param {string} username 
+ */
+export function sendGithubAnalysisRequest(username) {
+    $.ajax({
+        type: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        url: "/api/analysis/" + username
+    });
+}
 
 
 /**

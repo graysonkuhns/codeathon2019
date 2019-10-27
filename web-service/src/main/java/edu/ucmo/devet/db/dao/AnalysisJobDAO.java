@@ -13,7 +13,10 @@ public class AnalysisJobDAO {
         this.jdbi = jdbi;
     }
 
-    public void start(){
-        
+    public void start(String username){
+        jdbi.useHandle(handle -> handle
+            .createUpdate("INSERT INTO job (username) VALUES (:username)")
+            .bind("username", username)
+            .execute());
     }
 }

@@ -27,7 +27,7 @@ export default function ProfileInfo(props) {
                     <Avatar alt="gihub user" src={props.avatarUrl} className={classes.avatar} />
                 </Grid>
                 <Grid item sm={6} lg={9}>
-                    <Typography variant="body1">{props.description}</Typography>
+                    <Typography variant="body1">{props.bio}</Typography>
                 </Grid>
             </Grid>
         </Paper>

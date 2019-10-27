@@ -1,6 +1,7 @@
 package edu.ucmo.devet.jobworker.job;
 
 import com.google.inject.assistedinject.Assisted;
+import edu.ucmo.devet.jobworker.collection.CommitsCollector;
 import edu.ucmo.devet.jobworker.collection.RepositoriesCollector;
 import javax.inject.Inject;
 
@@ -11,14 +12,17 @@ public class DefaultJobRunner implements JobRunner {
 
   // Dependencies
   private final RepositoriesCollector repositoriesCollector;
+  private final CommitsCollector commitsCollector;
 
   @Inject
   DefaultJobRunner(
       @Assisted final Job job,
-      final RepositoriesCollector repositoriesCollector) {
+      final RepositoriesCollector repositoriesCollector,
+      final CommitsCollector commitsCollector) {
 
     this.job = job;
     this.repositoriesCollector = repositoriesCollector;
+    this.commitsCollector = commitsCollector;
   }
 
   /**
@@ -34,10 +38,11 @@ public class DefaultJobRunner implements JobRunner {
    */
   @Override
   public void run() {
-    try {
+    //try {
       repositoriesCollector.collect(job.getUser());
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
+      commitsCollector.collect(job.getUser());
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//    }
   }
 }

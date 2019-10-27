@@ -70,13 +70,13 @@ CREATE TABLE repository_language (
 );
 
 CREATE TABLE commit (
-	hash VARCHAR(30) PRIMARY KEY,
+	hash VARCHAR(50) PRIMARY KEY,
 	author VARCHAR(30),
 	timestamp TIMESTAMP
 );
 
 CREATE TABLE commit_language (
-	commit VARCHAR(30) PRIMARY KEY REFERENCES commit(hash),
+	commit VARCHAR(50) REFERENCES commit(hash),
 	language INTEGER REFERENCES language(id),
 	file_count INTEGER
 );

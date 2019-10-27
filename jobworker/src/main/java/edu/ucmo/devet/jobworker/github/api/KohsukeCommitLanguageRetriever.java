@@ -27,9 +27,9 @@ public class KohsukeCommitLanguageRetriever implements CommitLanguageRetriever {
     }
 
     @Override
-    public Map<String, Integer> getLanguages(Repository repo, Commit commit) throws LanguageRetrievalException {
+    public Map<Integer, Integer> getLanguages(Repository repo, Commit commit) throws LanguageRetrievalException {
         try {
-            Map<String, Integer> langCount = new HashMap<>();
+            Map<Integer, Integer> langCount = new HashMap<>();
 
             apiClient
                     .getRepository(String.format(
@@ -47,12 +47,14 @@ public class KohsukeCommitLanguageRetriever implements CommitLanguageRetriever {
                                 .getFileName()
                                 .substring(dotIndex + 1);
 
-                        String fileType = getFileFromExtenstion(ex);
+                        int fileType = getFileFromExtenstion(ex);
 
-                        if(langCount.containsKey(fileType)){
-                            langCount.put(fileType, langCount.get(fileType) + 1);
-                        } else {
-                            langCount.put(fileType, 1);
+                        if (fileType != -1) {
+                            if (langCount.containsKey(fileType)) {
+                                langCount.put(fileType, langCount.get(fileType) + 1);
+                            } else {
+                                langCount.put(fileType, 1);
+                            }
                         }
                     });
 
@@ -62,7 +64,7 @@ public class KohsukeCommitLanguageRetriever implements CommitLanguageRetriever {
         }
     }
 
-    private String getFileFromExtenstion(String ex){
+    private int getFileFromExtenstion(String ex){
         Integer fileId = fileExtensionDAO.list().get(ex);
 
         if(fileId != null) {
@@ -71,10 +73,10 @@ public class KohsukeCommitLanguageRetriever implements CommitLanguageRetriever {
                     .filter(file -> file.getId() == fileId)
                     .findFirst()
                     .get()
-                    .getName();
+                    .getId();
         } else {
             System.out.printf("File extension not currently supported: .%s\n", ex);
-            return null;
+            return -1;
         }
 
     }

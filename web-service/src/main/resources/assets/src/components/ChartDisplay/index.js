@@ -101,7 +101,9 @@ function ChartDisplay(props) {
                 /** @type {number[][]} */
                 const oldData = data2;
 
-                if (oldData) {
+                if (!oldData) {
+                    setData2(newData);
+                } else {
                     newData.forEach(d => {
                         // If the language already exists
                         const oldLang = oldData.find(lang => lang[0] == d[0]);
@@ -113,8 +115,6 @@ function ChartDisplay(props) {
                     });
 
                     setData2(oldData);
-                } else {
-                    setData2(newData);
                 }
             }
 
@@ -127,13 +127,13 @@ function ChartDisplay(props) {
      */
     function handleSearch(username) {
         setClicked(true);
-
+        console.log("test7");
         if (props.data) {
             setFreezeData(true);
             setTimeout(() => {
-                setOldProps(undefined);
-                setData1(undefined);
+                //setData1(undefined);
                 setData2(undefined);
+                setOldProps(null);
                 setFreezeData(false);
                 updateData();
             }, 1000);

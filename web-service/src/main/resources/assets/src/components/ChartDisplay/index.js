@@ -4,7 +4,6 @@ import { Grid, Typography, Slide, Card, CardContent, CircularProgress } from '@m
 import Paper from '@material-ui/core/Paper';
 import Search from '../Search';
 import Title from '../Title';
-import Info from '../Info';
 import ProfileInfo from '../ProfileInfo'
 import { makeStyles } from '@material-ui/core/styles';
 import "chart.js";
@@ -181,13 +180,16 @@ function ChartDisplay(props) {
                             </Grid>
 
                             <Grid item xs={12} md={12} lg={6}>
-                                {
-                                    props.data.topRepositories.map(repo => {
-                                        return repo.name;
-                                    })
-                                }
+                                <Paper>
+                                    {
+                                        props.data.topRepositories.map((repo, i) => {
+                                            return (
+                                                <Title key={i++}>repo.name</Title>
+                                            )
+                                        })
+                                    }
+                                </Paper>
                             </Grid>
-                            <Info />
                         </Grid>
                     </Slide>
                     :

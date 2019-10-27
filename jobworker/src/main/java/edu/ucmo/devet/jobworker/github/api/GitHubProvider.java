@@ -9,7 +9,7 @@ import org.kohsuke.github.GitHubBuilder;
 public class GitHubProvider implements Provider<GitHub> {
 
   // Constants
-  private static final String API_TOKEN = "d59a86dac80deba22a2c6ab59aaac38d3c8fbf81";
+  private static final String API_TOKEN = "";
   private static final String API_ENDPOINT = "https://api.github.com";
 
   @Override

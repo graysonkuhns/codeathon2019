@@ -8,13 +8,9 @@ CREATE OR REPLACE USER `devet`@`%` IDENTIFIED BY 'devet';
 GRANT ALL PRIVILEGES ON devet.* TO `devet`@`%` WITH GRANT OPTION;
 
 # Create database schema
-CREATE TABLE user (
-    username VARCHAR(30) NOT NULL PRIMARY KEY
-);
-
 CREATE TABLE repository (
     id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    owner VARCHAR(30) NOT NULL REFERENCES user(username),
+    owner VARCHAR(30) NOT NULL,
     name VARCHAR(30) NOT NULL
 );
 
@@ -30,7 +26,7 @@ CREATE TABLE file_extension (
 
 CREATE TABLE job (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
-	username VARCHAR(30) REFERENCES user(username)
+	username VARCHAR(30)
 );
 
 # Populate programming languages
@@ -45,6 +41,8 @@ INSERT INTO language (name) VALUES ('Python');
 INSERT INTO language (name) VALUES ('C');
 INSERT INTO language (name) VALUES ('C++');
 INSERT INTO language (name) VALUES ('C#');
+INSERT INTO language (name) VALUES ('Shell');
+INSERT INTO language (name) VALUES ('PHP');
 
 # Populate file extensions
 INSERT INTO file_extension (language, extension) VALUES (1, 'java');
@@ -61,6 +59,8 @@ INSERT INTO file_extension (language, extension) VALUES (8, 'py');
 INSERT INTO file_extension (language, extension) VALUES (9, 'c');
 INSERT INTO file_extension (language, extension) VALUES (10, 'cpp');
 INSERT INTO file_extension (language, extension) VALUES (11, 'cs');
+INSERT INTO file_extension (language, extension) VALUES (12, 'sh');
+INSERT INTO file_extension (language, extension) VALUES (13, 'php');
 
 CREATE TABLE repository_language (
 	repository INTEGER REFERENCES repository(id),
@@ -70,7 +70,7 @@ CREATE TABLE repository_language (
 
 CREATE TABLE commit (
 	hash VARCHAR(30) PRIMARY KEY,
-	author VARCHAR(30) REFERENCES user(username),
+	author VARCHAR(30),
 	timestamp TIMESTAMP
 );
 

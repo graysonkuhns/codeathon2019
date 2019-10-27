@@ -90,7 +90,8 @@ public class WebsocketHandler implements AtmosphereHandler {
                     String newData = new ObjectMapper().writeValueAsString(
                         new GithubAnalysis(
                             repositoryDAO.listLanguageCount(username),
-                            commitDAO.listCommitLanguageCount(username)));
+                            commitDAO.listCommitLanguageCount(username),
+                            repositoryDAO.listTop5Repositories(username)));
                     if(!newData.equals(data.get(id))) {
                         broadcastData(String.valueOf(id), newData);
                     }

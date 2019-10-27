@@ -22,16 +22,18 @@ public class RepositoryDAO {
   public Repository create(final GHRepository repo) {
     String owner = repo.getOwnerName();
     String name = repo.getName();
+    int stars = repo.getStargazersCount();
 
     int id = jdbi.withHandle(handle -> handle
-        .createUpdate("INSERT INTO repository (owner, name) VALUES (:owner, :name)")
+        .createUpdate("INSERT INTO repository (owner, name, stars) VALUES (:owner, :name, :stars)")
         .bind("owner", owner)
         .bind("name", name)
+        .bind("stars", stars)
         .executeAndReturnGeneratedKeys("id")
         .mapTo(Integer.class)
         .one());
 
-    return new Repository(id, owner, name);
+    return new Repository(id, owner, name, stars);
   }
 
   public void delete(final Collection<GHRepository> repos) {

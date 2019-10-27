@@ -65,7 +65,6 @@ function ChartDisplay(props) {
     });
 
     function updateData() {
-        console.log(props.data);
         if (props.data && props.data.repositoryLanguages && !freezeData) {
             {
                 // Handle repository languages
@@ -118,6 +117,9 @@ function ChartDisplay(props) {
             }
 
             setOldProps(props);
+
+            // eslint-disable-next-line no-console
+            console.log(props.data.topRepositories);
         }
     }
 

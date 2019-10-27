@@ -12,7 +12,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 400
+    width: 400,
+    marginBottom: '2rem'
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -29,32 +30,32 @@ const useStyles = makeStyles(theme => ({
 
 
 function SearchBar(props) {
-    const [value, setValue] = useState('');
-    const classes = useStyles();
+  const [value, setValue] = useState('');
+  const classes = useStyles();
 
-    /**
-     * @param {KeyboardEvent} event
-     */
-    function handleUpdate(event) {
-        setValue(/** @type {HTMLInputElement} */(event.target).value)
-    }
+  /**
+   * @param {KeyboardEvent} event
+   */
+  function handleUpdate(event) {
+    setValue(/** @type {HTMLInputElement} */(event.target).value)
+  }
 
-    return (
-        <>
-            <Paper className={classes.root}>
-                <InputBase
-                        className={classes.input}
-                        placeholder="Search…"
-                        value={value}
-                        onChange={handleUpdate.bind(this)}
-                        inputProps={{ 'aria-label': 'search' }}
-                    />
-                <IconButton className={classes.iconButton} aria-label="search" onClick={props.handleSearch.bind(this, value)}>
-                    <SearchIcon />
-                </IconButton>
-            </Paper>
-        </>
-    );
+  return (
+    <>
+      <Paper className={classes.root}>
+        <InputBase
+          className={classes.input}
+          placeholder="Search…"
+          value={value}
+          onChange={handleUpdate.bind(this)}
+          inputProps={{ 'aria-label': 'search' }}
+        />
+        <IconButton className={classes.iconButton} aria-label="search" onClick={props.handleSearch.bind(this, value)}>
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </>
+  );
 }
 
 export default SearchBar;

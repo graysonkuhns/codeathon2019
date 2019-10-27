@@ -4,7 +4,7 @@ import ChartDisplay from './components/ChartDisplay'
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import * as BackGround from "./dot-grid.png";
-import { registerWebSocket } from './api';
+import { registerWebSocket, sendGithubAnalysisRequest } from './api';
 
 class App extends React.Component {
     /**
@@ -23,8 +23,12 @@ class App extends React.Component {
         registerWebSocket(this.handleDataUpdate.bind(this));
     }
 
-    handleSearch() {
 
+    /**
+     * @param {string} username
+     */
+    handleSearch(username) {
+        sendGithubAnalysisRequest(username);
     }
 
     /**
@@ -41,7 +45,7 @@ class App extends React.Component {
             <div style={{ background: BackGround, backgroundRepeat: "repeat" }}>
                 <CssBaseline />
                 <NavBar />
-                <ChartDisplay data={this.state.data} handleSearch={this.handleSearch()} />
+                <ChartDisplay data={this.state.data} handleSearch={this.handleSearch} />
             </div>
         )
     }

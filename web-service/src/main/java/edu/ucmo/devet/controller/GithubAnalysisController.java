@@ -27,22 +27,15 @@ public class GithubAnalysisController implements Controller {
         this.languageDAO = languageDAO;
         this.repositoryDAO = repositoryDAO;
     }
-
     
     @POST
-    @Path("{username}")
+    @Path("/{username}")
     public void startAnylysis(@PathParam("username") String username){
-        analysisJobDAO.start();
+        analysisJobDAO.start(username);
     }
-    
     
     @GET
     public GithubAnalysis getAnalysis() {
-        try {
-            System.out.println("Value: " + new ObjectMapper().writeValueAsString(new GithubAnalysis(repositoryDAO.listLanguageCount())));
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
         return new GithubAnalysis(repositoryDAO.listLanguageCount());
     }
 }

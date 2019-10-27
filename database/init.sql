@@ -28,6 +28,11 @@ CREATE TABLE file_extension (
 	language INTEGER REFERENCES language(id)
 );
 
+CREATE TABLE job (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	username VARCHAR(30) REFERENCES user(username)
+);
+
 # Populate programming languages
 INSERT INTO language (name) VALUES ('Java');
 INSERT INTO language (name) VALUES ('HTML');

@@ -27,7 +27,7 @@ class App extends React.Component {
   
     render(){
     return(
-      <div style={{backgound: BackGround, backgroundRepeat: "repeat"}}>
+      <div style={{background: BackGround , backgroundRepeat: "repeat"}}>
         <CssBaseline/>
         <NavBar/>
         <ChartDisplay data={this.state.data} handleSearch={this.handleSearch()}/>

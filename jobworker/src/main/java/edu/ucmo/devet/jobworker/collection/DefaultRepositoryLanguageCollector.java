@@ -45,6 +45,11 @@ public class DefaultRepositoryLanguageCollector implements RepositoryLanguageCol
    */
   @Override
   public void collect(final Repository repo) {
+    System.out.printf(
+        "Analyzing repository %s owned by %s\n",
+        repo.getName(),
+        repo.getUser());
+
     // Get the language stats
     final Map<Language, Integer> languageStats =
         convertLangStats(languageRetriever.getLanguages(repo));

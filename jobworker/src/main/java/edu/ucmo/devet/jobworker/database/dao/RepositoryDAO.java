@@ -1,9 +1,12 @@
 package edu.ucmo.devet.jobworker.database.dao;
 
+import com.google.common.collect.ImmutableList;
 import edu.ucmo.devet.model.Repository;
+import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.core.result.ResultBearing;
+import org.jdbi.v3.core.statement.PreparedBatch;
 import org.kohsuke.github.GHRepository;
 
 public class RepositoryDAO {
@@ -29,5 +32,25 @@ public class RepositoryDAO {
         .one());
 
     return new Repository(id, owner, name);
+  }
+
+  public void delete(final Collection<GHRepository> repos) {
+    jdbi.useHandle(handle -> {
+      PreparedBatch batch = handle.prepareBatch(
+          "DELETE FROM repository WHERE owner = :owner AND name = :name");
+
+      repos.forEach(repo -> {
+        final String owner = repo.getOwnerName();
+        final String name = repo.getName();
+        System.out.printf("Deleting repository %s owned by %s\n", name, owner);
+
+        batch
+            .bind("owner", owner)
+            .bind("name", name)
+            .add();
+
+        batch.execute();
+      });
+    });
   }
 }

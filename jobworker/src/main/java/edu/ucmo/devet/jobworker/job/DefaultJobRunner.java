@@ -34,6 +34,10 @@ public class DefaultJobRunner implements JobRunner {
    */
   @Override
   public void run() {
-    repositoriesCollector.collect(job.getUser());
+    try {
+      repositoriesCollector.collect(job.getUser());
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
 }

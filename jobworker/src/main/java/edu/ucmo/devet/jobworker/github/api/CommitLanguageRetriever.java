@@ -17,5 +17,5 @@ public interface CommitLanguageRetriever {
      * @return the languages
      * @throws LanguageRetrievalException the language retrieval exception
      */
-    Map<String, Integer> getLanguages(Repository repo, Commit commit) throws LanguageRetrievalException;
+    Map<Integer, Integer> getLanguages(Repository repo, Commit commit) throws LanguageRetrievalException;
 }

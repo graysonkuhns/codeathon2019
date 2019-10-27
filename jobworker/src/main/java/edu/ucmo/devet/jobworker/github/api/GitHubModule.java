@@ -25,5 +25,6 @@ public class GitHubModule extends AbstractModule {
         Multibinder.newSetBinder(binder(), JsonDeserializer.class);
 
     deserializerMultibinder.addBinding().to(RepositoryDeserializer.class);
+    deserializerMultibinder.addBinding().to(CommitDeserializer.class);
   }
 }

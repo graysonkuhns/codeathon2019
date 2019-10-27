@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import "chart.js";
 import { PieChart } from 'react-chartkick';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1
     },
@@ -48,9 +48,10 @@ function ChartDisplay(props) {
 
     const [freezeData, setFreezeData] = useState(false);
     const [data, setData] = useState();
+    const [oldProps, setOldProps] = useState();
 
     useEffect(() => {
-        if (!data) {
+        if (oldProps != props) {
             updateData();
         }
     });
@@ -59,11 +60,15 @@ function ChartDisplay(props) {
         if (props.data && props.data.repositoryLanguages && !freezeData) {
             const langs = props.data.repositoryLanguages;
             setData(Object.keys(langs).map(key => [key, langs[key]]));
+            setOldProps(props);
         }
     }
 
+    /**
+     * @param {string} username
+     */
     function handleSearch(username) {
-        if (!!data) {
+        if (data) {
             setFreezeData(true);
             setTimeout(() => {
                 setData(undefined);

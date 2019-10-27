@@ -1,7 +1,8 @@
 package edu.ucmo.devet.jobworker.github.api;
 
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.google.inject.AbstractModule;
-import edu.ucmo.devet.jobworker.collection.CommitLanguageCollector;
+import com.google.inject.multibindings.Multibinder;
 import org.kohsuke.github.GitHub;
 
 public class GitHubModule extends AbstractModule {
@@ -19,5 +20,10 @@ public class GitHubModule extends AbstractModule {
     bind(CommitLanguageRetriever.class)
             .to(KohsukeCommitLanguageRetriever.class);
 
+    // JSON Deserializers
+    Multibinder<JsonDeserializer> deserializerMultibinder =
+        Multibinder.newSetBinder(binder(), JsonDeserializer.class);
+
+    deserializerMultibinder.addBinding().to(RepositoryDeserializer.class);
   }
 }

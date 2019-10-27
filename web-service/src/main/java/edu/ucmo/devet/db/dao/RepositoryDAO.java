@@ -26,13 +26,22 @@ public class RepositoryDAO {
         jdbi.registerRowMapper(JoinRowMapper.forTypes(String.class, Long.class));
     }
     
-    public Map<String, Long> listLanguageCount(){
+    public Map<String, Long> listLanguageCount(String username){
         Map<String, Long> languageCount = new HashMap<>();
         jdbi.useHandle(handle -> handle
-            .createQuery("SELECT l.name, rl.byte_count FROM repository_language AS rl JOIN language AS l WHERE l.id = rl.language")
+            .createQuery("SELECT l.name, rl.byte_count FROM repository_language AS rl JOIN language AS l " +
+                "WHERE l.id = rl.language AND rl.repository IN " +
+                "(SELECT id FROM repository WHERE owner = :owner)")
+            .bind("owner", username)
             .mapToBean(LanguageTuple.class)
             .list()
-            .forEach(tuple -> languageCount.put(tuple.name, tuple.byteCount)));
+            .forEach(tuple -> {
+                if(languageCount.containsKey(tuple.name)){
+                    languageCount.put(tuple.name, languageCount.get(tuple.name) + tuple.byteCount);
+                } else {
+                    languageCount.put(tuple.name, tuple.byteCount);
+                }
+            }));
         
         return languageCount;
     }

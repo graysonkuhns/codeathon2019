@@ -7,7 +7,9 @@ import com.google.inject.Singleton;
 import edu.ucmo.devet.db.dao.AnalysisJobDAO;
 import edu.ucmo.devet.db.dao.LanguageDAO;
 import edu.ucmo.devet.db.dao.RepositoryDAO;
+import edu.ucmo.devet.handler.WebsocketHandler;
 import edu.ucmo.devet.model.GithubAnalysis;
+import org.atmosphere.websocket.WebSocket;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -20,22 +22,20 @@ public class GithubAnalysisController implements Controller {
     private final AnalysisJobDAO analysisJobDAO;
     private final LanguageDAO languageDAO;
     private final RepositoryDAO repositoryDAO;
+    private final WebsocketHandler websocketHandler;
 
     @Inject
-    public GithubAnalysisController(AnalysisJobDAO analysisJobDAO, LanguageDAO languageDAO, RepositoryDAO repositoryDAO) {
+    public GithubAnalysisController(AnalysisJobDAO analysisJobDAO, LanguageDAO languageDAO, RepositoryDAO repositoryDAO, WebsocketHandler websocketHandler) {
         this.analysisJobDAO = analysisJobDAO;
         this.languageDAO = languageDAO;
         this.repositoryDAO = repositoryDAO;
+        this.websocketHandler = websocketHandler;
     }
-    
+
     @POST
     @Path("/{username}")
     public void startAnylysis(@PathParam("username") String username){
         analysisJobDAO.start(username);
-    }
-    
-    @GET
-    public GithubAnalysis getAnalysis() {
-        return new GithubAnalysis(repositoryDAO.listLanguageCount());
+        websocketHandler.startDataUpdate(username);
     }
 }

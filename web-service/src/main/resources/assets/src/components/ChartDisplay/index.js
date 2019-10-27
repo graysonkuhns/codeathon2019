@@ -59,7 +59,29 @@ function ChartDisplay(props) {
     function updateData() {
         if (props.data && props.data.repositoryLanguages && !freezeData) {
             const langs = props.data.repositoryLanguages;
-            setData(Object.keys(langs).map(key => [key, langs[key]]));
+
+            const newData = Object.keys(langs).map(key => [key, langs[key]]);
+
+            /** @type {number[][]} */
+            const oldData = data;
+
+            if (oldData) {
+                newData.forEach(d => {
+                    // If the language already exists
+                    const oldLang = oldData.find(lang => lang[0] == d[0]);
+                    if (oldLang) {
+                        oldLang[1] = d[1];
+                    } else {
+                        oldData.push(d);
+                    }
+                });
+
+                setData(oldData);
+            } else {
+                setData(newData);
+            }
+
+
             setOldProps(props);
         }
     }

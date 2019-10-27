@@ -4,20 +4,27 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jdbi.v3.core.Jdbi;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Singleton
 public class CommitDAO {
+    
     private final Jdbi jdbi;
+    private final LanguageDAO languageDAO;
 
     @Inject
-    public CommitDAO(final Jdbi jdbi){
+    public CommitDAO(Jdbi jdbi, LanguageDAO languageDAO) {
         this.jdbi = jdbi;
+        this.languageDAO = languageDAO;
     }
 
     public Map<String, Integer> listCommitLanguageCount(String username){
         Map<String, Integer> languageCount = new HashMap<>();
+
+        // Init the map with every language
+        languageDAO.list()
+            .forEach(language -> languageCount.put(language.getName(), 0));
+        
         jdbi.useHandle(handle -> handle
             .createQuery("SELECT l.name, rl.file_count FROM commit_language AS rl JOIN language AS l " +
                 "WHERE l.id = rl.language AND rl.commit IN " +

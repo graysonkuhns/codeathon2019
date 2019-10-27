@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -29,7 +30,6 @@ public class RepositoryDAO {
     public Map<String, Long> listLanguageCount(String username){
         Map<String, Long> languageCount = new HashMap<>();
         
-        
         jdbi.useHandle(handle -> handle
             .createQuery("SELECT l.name, rl.byte_count FROM repository_language AS rl JOIN language AS l " +
                 "WHERE l.id = rl.language AND rl.repository IN " +
@@ -38,7 +38,11 @@ public class RepositoryDAO {
             .mapToBean(LanguageTuple.class)
             .list()
             .forEach(tuple -> {
-                languageCount.put(tuple.name, languageCount.get(tuple.name) + tuple.byteCount);
+                if(languageCount.containsKey(tuple.name)){
+                    languageCount.put(tuple.name, languageCount.get(tuple.name) + tuple.byteCount);
+                } else {
+                    languageCount.put(tuple.name, tuple.byteCount);
+                }
             }));
         
         return languageCount;

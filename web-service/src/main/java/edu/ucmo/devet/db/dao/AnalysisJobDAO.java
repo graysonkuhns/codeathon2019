@@ -5,12 +5,15 @@ import com.google.inject.Singleton;
 import org.jdbi.v3.core.Jdbi;
 
 @Singleton
-public class ReposDAO {
-    
+public class AnalysisJobDAO {
     private final Jdbi jdbi;
-    
+
     @Inject
-    public ReposDAO(final Jdbi jdbi){
+    public AnalysisJobDAO(Jdbi jdbi) {
         this.jdbi = jdbi;
+    }
+
+    public void start(){
+        
     }
 }

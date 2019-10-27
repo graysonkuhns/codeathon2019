@@ -19,7 +19,7 @@ export default function info() {
             <Grid container justify="center">
                 <Grid item sm={12} lg={6}>
                     <Title variant="h3">Latest Commit:</Title>
-                    <Link href="https://github.com/JohnIrle"></Link>
+                    <Link href="https://github.com/JohnIrle">Click me</Link>
                 </Grid>
                 <Grid item sm={12} lg={6}>
                     <Title variant='h3'>Number of files by Language:</Title>

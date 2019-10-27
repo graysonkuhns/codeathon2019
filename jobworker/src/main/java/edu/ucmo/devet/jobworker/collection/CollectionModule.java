@@ -9,5 +9,6 @@ public class CollectionModule extends AbstractModule {
   protected void configure() {
     bind(LanguageCache.class).to(DefaultLanguageCache.class);
     bind(RepositoryLanguageCollector.class).to(DefaultRepositoryLanguageCollector.class);
+    bind(CommitLanguageCollector.class).to(DefaultCommitLanguageCollector.class);
   }
 }

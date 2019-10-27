@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Grid, Typography, Slide, Card, CardContent } from '@material-ui/core';
+import { Grid, Typography, Slide, Card, CardContent, CircularProgress } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Search from '../Search';
 import Title from '../Title';
@@ -57,6 +57,7 @@ function ChartDisplay(props) {
     const [data1, setData1] = useState();
     const [data2, setData2] = useState();
     const [oldProps, setOldProps] = useState();
+    const [clicked, setClicked] = useState(false);
 
     useEffect(() => {
         if (oldProps != props) {
@@ -65,8 +66,10 @@ function ChartDisplay(props) {
     });
 
     function updateData() {
-        if (props.data && props.data.repositoryLanguages && !freezeData) {
+        if (props.data && !freezeData) {
             {
+                setClicked(false);
+
                 // Handle repository languages
                 const langs = props.data.repositoryLanguages;
                 const newData = Object.keys(langs).map(key => [key, langs[key]]);
@@ -117,9 +120,6 @@ function ChartDisplay(props) {
             }
 
             setOldProps(props);
-
-            // eslint-disable-next-line no-console
-            console.log(props.data.topRepositories);
         }
     }
 
@@ -127,13 +127,17 @@ function ChartDisplay(props) {
      * @param {string} username
      */
     function handleSearch(username) {
-        if (data1 || data2) {
+        setClicked(true);
+
+        if (props.data) {
             setFreezeData(true);
             setTimeout(() => {
+                setOldProps(undefined);
                 setData1(undefined);
                 setData2(undefined);
                 setFreezeData(false);
-            }, 1000)
+                updateData();
+            }, 1000);
         }
 
         props.handleSearch(username);
@@ -151,30 +155,46 @@ function ChartDisplay(props) {
                     <Search handleSearch={handleSearch} className={classes.searchBar} />
                 </Grid>
             </Grid>
-            <Slide in={((!!data1 && data1.length > 0) || (!!data2 && data2.length > 0)) && !freezeData} timeout={1000} direction="up">
-                <Grid justify="center" container spacing={3}>
-                    <ProfileInfo
-                        className={classes.profile} avatarUrl="https://avatars1.githubusercontent.com/u/11879736?v=4" bio="Full-Stack Javascript Development. Computer Science Graduate Student at the University of Central Missouri. " />
-                    <Grid item xs={12} md={12} lg={6}>
-                        <Card className={classes.card}>
-                            <CardContent>
-                                <Title>Owned Repositories</Title>
-                                <PieChart data={data1} />
-                            </CardContent>
-                        </Card>
-                    </Grid>
+            {
+                oldProps ?
+                    <Slide in={oldProps && oldProps.data && !freezeData} timeout={1000} direction="up">
+                        <Grid justify="center" container spacing={3}>
+                            <ProfileInfo
+                                className={classes.profile} avatarUrl="https://avatars1.githubusercontent.com/u/11879736?v=4" bio="Full-Stack Javascript Development. Computer Science Graduate Student at the University of Central Missouri. " />
+                            <Grid item xs={12} md={12} lg={6}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Title>Owned Repositories</Title>
+                                        <PieChart data={data1} />
+                                    </CardContent>
+                                </Card>
+                            </Grid>
 
-                    <Grid item xs={12} md={12} lg={6}>
-                        <Card className={classes.card}>
-                            <CardContent>
-                                <Title>Contributed Code</Title>
-                                <PieChart data={data2} />
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    <Info />
-                </Grid>
-            </Slide>
+                            <Grid item xs={12} md={12} lg={6}>
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Title>Contributed Code</Title>
+                                        <PieChart data={data2} />
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+
+                            <Grid item xs={12} md={12} lg={6}>
+                                {
+                                    props.data.topRepositories.map(repo => {
+                                        return repo.name;
+                                    })
+                                }
+                            </Grid>
+                            <Info />
+                        </Grid>
+                    </Slide>
+                    :
+                    (
+                        clicked &&
+                        <CircularProgress />
+                    )
+            }
         </Paper>
     );
 }

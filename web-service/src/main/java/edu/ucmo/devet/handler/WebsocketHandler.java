@@ -1,20 +1,40 @@
 package edu.ucmo.devet.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import edu.ucmo.devet.db.dao.RepositoryDAO;
+import edu.ucmo.devet.model.GithubAnalysis;
 import org.atmosphere.config.service.AtmosphereHandlerService;
 import org.atmosphere.cpr.*;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
-
-@AtmosphereHandlerService
+@Singleton
 public class WebsocketHandler implements AtmosphereHandler {
     private static final String BROADCASTER_NAME = "data";
+    private BroadcasterFactory broadcasterFactory;
+        
+    @Inject 
+    private RepositoryDAO repositoryDAO;
+
+    public WebsocketHandler(RepositoryDAO repositoryDAO) {
+        this.repositoryDAO = repositoryDAO;
+    }
+
+    private String data = "";
+    private Timer timer;
 
     @Override
     public void onRequest(AtmosphereResource atmosphereResource) throws IOException {
-        BroadcasterFactory broadcasterFactory = atmosphereResource.getAtmosphereConfig().getBroadcasterFactory();
+        broadcasterFactory = atmosphereResource.getAtmosphereConfig().getBroadcasterFactory();
         Broadcaster broadcaster = getBroadcaster(broadcasterFactory);
         atmosphereResource.setBroadcaster(broadcaster);
         atmosphereResource.suspend();
+        
+        startDataUpdate();
     }
 
     private boolean isBroadcast(AtmosphereResourceEvent event) {
@@ -50,5 +70,33 @@ public class WebsocketHandler implements AtmosphereHandler {
 
     public void broadcastData(BroadcasterFactory broadcasterFactory, String data) {
         getBroadcaster(broadcasterFactory).broadcast(data);
+    }
+
+    private void startDataUpdate() {
+        if(timer != null){
+            return;
+        }
+        
+        TimerTask schedulerTask = new TimerTask() {
+            @Override
+            public void run()
+            {
+                try {
+                    String newData = new ObjectMapper().writeValueAsString(new GithubAnalysis(repositoryDAO.listLanguageCount()));
+
+                    if(!newData.equals(data) && broadcasterFactory != null && broadcasterFactory.lookupAll().size() > 0) {
+                        broadcastData(broadcasterFactory, newData);
+                        data = newData;
+                    }
+                } catch (JsonProcessingException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        timer = new Timer("Data update timer");
+
+        long intervalMilli = 1000L;
+        timer.scheduleAtFixedRate(schedulerTask, intervalMilli, intervalMilli);
     }
 }

@@ -9,6 +9,6 @@ public class ControllersModule extends AbstractModule {
     protected void configure() {
         Multibinder<Controller> controllerMultiBinder = Multibinder.newSetBinder(binder(), Controller.class);
         
-        controllerMultiBinder.addBinding().to(ReposController.class);
+        controllerMultiBinder.addBinding().to(GithubAnalysisController.class);
     }
 }

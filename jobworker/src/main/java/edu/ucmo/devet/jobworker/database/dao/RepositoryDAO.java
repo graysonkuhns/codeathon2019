@@ -3,6 +3,7 @@ package edu.ucmo.devet.jobworker.database.dao;
 import edu.ucmo.devet.model.Repository;
 import javax.inject.Inject;
 import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.result.ResultBearing;
 import org.kohsuke.github.GHRepository;
 
 public class RepositoryDAO {
@@ -23,7 +24,9 @@ public class RepositoryDAO {
         .createUpdate("INSERT INTO repository (owner, name) VALUES (:owner, :name)")
         .bind("owner", owner)
         .bind("name", name)
-        .execute());
+        .executeAndReturnGeneratedKeys("id")
+        .mapTo(Integer.class)
+        .one());
 
     return new Repository(id, owner, name);
   }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import NavBar from './components/NavBar';
 import ChartDisplay from './components/ChartDisplay'
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Axios from 'axios';
 
 import * as BackGround from "./dot-grid.png";
 import { registerWebSocket, sendGithubAnalysisRequest } from './api';
@@ -14,7 +15,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            data: undefined
+            data: undefined,
         }
         this.handleSearch = this.handleSearch.bind(this);
     }

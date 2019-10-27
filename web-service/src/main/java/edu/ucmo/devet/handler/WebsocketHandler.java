@@ -8,6 +8,8 @@ import edu.ucmo.devet.db.dao.RepositoryDAO;
 import edu.ucmo.devet.model.GithubAnalysis;
 import org.atmosphere.cpr.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,17 +25,22 @@ public class WebsocketHandler implements AtmosphereHandler {
         this.repositoryDAO = repositoryDAO;
     }
 
-    private String data = "";
-    private Timer timer;
+//    private String data = "";
+    private int broadcasterCounter = 0;
+    
+    private List<Timer> timers = new ArrayList<>();
+    private List<Broadcaster> broadcasters = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
 
     @Override
     public void onRequest(AtmosphereResource atmosphereResource) throws IOException {
         broadcasterFactory = atmosphereResource.getAtmosphereConfig().getBroadcasterFactory();
-        Broadcaster broadcaster = getBroadcaster(broadcasterFactory);
+        Broadcaster broadcaster = getBroadcaster(String.valueOf(broadcasterCounter++));
+        broadcasters.add(broadcaster);
+        data.add("");
+        
         atmosphereResource.setBroadcaster(broadcaster);
         atmosphereResource.suspend();
-        
-        broadcastData(broadcasterFactory, data);
     }
 
     private boolean isBroadcast(AtmosphereResourceEvent event) {
@@ -63,29 +70,25 @@ public class WebsocketHandler implements AtmosphereHandler {
     public void destroy() {
     }
 
-    private Broadcaster getBroadcaster(BroadcasterFactory broadcasterFactory) {
-        return broadcasterFactory.lookup(BROADCASTER_NAME, true);
+    private Broadcaster getBroadcaster(String id) {
+        return broadcasterFactory.lookup(id, true);
     }
 
-    public void broadcastData(BroadcasterFactory broadcasterFactory, String data) {
-        getBroadcaster(broadcasterFactory).broadcast(data);
+    public void broadcastData(String id, String data) {
+        getBroadcaster(id).broadcast(data);
     }
 
     public void startDataUpdate(String username) {
-        if(timer != null){
-            return;
-        }
+        int id = broadcasterCounter - 1;
         
-        TimerTask schedulerTask = new TimerTask() {
+        TimerTask updateTask = new TimerTask() {
             @Override
             public void run()
             {
                 try {
                     String newData = new ObjectMapper().writeValueAsString(new GithubAnalysis(repositoryDAO.listLanguageCount(username)));
-
-                    if(!newData.equals(data) && broadcasterFactory != null && broadcasterFactory.lookupAll().size() > 0) {
-                        broadcastData(broadcasterFactory, newData);
-                        data = newData;
+                    if(!newData.equals(data.get(id))) {
+                        broadcastData(String.valueOf(id), newData);
                     }
                 } catch (JsonProcessingException e){
                     e.printStackTrace();
@@ -93,9 +96,18 @@ public class WebsocketHandler implements AtmosphereHandler {
             }
         };
 
-        timer = new Timer("Data update timer");
-
-        long intervalMilli = 1000L;
-        timer.scheduleAtFixedRate(schedulerTask, intervalMilli, intervalMilli);
+        Timer timer = new Timer(username);
+        timer.scheduleAtFixedRate(updateTask, 0, 1000L);
+        
+        if(broadcasters.size() > timers.size()) {
+            // New page has been opened, start a new timer
+            timers.add(timer);
+        } else {
+            // Same page, delete old and make new
+            timers.get(id).cancel();
+            timers.set(id, timer);
+        }
     }
 }
+
+

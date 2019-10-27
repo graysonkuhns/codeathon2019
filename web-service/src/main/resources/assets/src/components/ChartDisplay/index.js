@@ -98,10 +98,10 @@ function ChartDisplay(props) {
                     <Search handleSearch={handleSearch} className={classes.searchBar} />
                 </Grid>
             </Grid>
-            <Slide in={!!data && data.length > 0 && !freezeData} timeout={1000} direction="up" style={{ display: "none" }}>
+            <Slide in={!!data && data.length > 0 && !freezeData} timeout={1000} direction="up">
                 <Grid justify="center" container spacing={3}>
-                    <ProfileInfo avatarUrl={props.data.avatar_url} description={props.data.bio}
-                        className={classes.profile} />
+                    <ProfileInfo
+                        className={classes.profile} avatarUrl="https://avatars1.githubusercontent.com/u/11879736?v=4" bio="Full-Stack Javascript Development. Computer Science Graduate Student at the University of Central Missouri. " />
                     <Grid item xs={12} md={12} lg={6}>
                         <Card className={classes.card}>
                             <CardContent>

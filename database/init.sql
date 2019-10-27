@@ -45,6 +45,7 @@ INSERT INTO language (name) VALUES ('Python');
 INSERT INTO language (name) VALUES ('C');
 INSERT INTO language (name) VALUES ('C++');
 INSERT INTO language (name) VALUES ('C#');
+INSERT INTO language (name) VALUES ('Shell');
 
 # Populate file extensions
 INSERT INTO file_extension (language, extension) VALUES (1, 'java');
@@ -61,6 +62,7 @@ INSERT INTO file_extension (language, extension) VALUES (8, 'py');
 INSERT INTO file_extension (language, extension) VALUES (9, 'c');
 INSERT INTO file_extension (language, extension) VALUES (10, 'cpp');
 INSERT INTO file_extension (language, extension) VALUES (11, 'cs');
+INSERT INTO file_extension (language, extension) VALUES (12, 'sh');
 
 CREATE TABLE repository_language (
 	repository INTEGER REFERENCES repository(id),

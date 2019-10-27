@@ -31,6 +31,7 @@ public class RepositoriesCollector {
           .getRepositories()
           .values()
           .stream()
+          .filter(repo -> !repo.isFork())
           .map(repositoryDAO::create)
           .forEach(languageCollector::collect);
     } catch (IOException ex) {

@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import edu.ucmo.devet.db.dao.RepositoryDAO;
 import edu.ucmo.devet.model.GithubAnalysis;
-import org.atmosphere.config.service.AtmosphereHandlerService;
 import org.atmosphere.cpr.*;
 import java.io.IOException;
 import java.util.Timer;
@@ -17,9 +16,9 @@ public class WebsocketHandler implements AtmosphereHandler {
     private static final String BROADCASTER_NAME = "data";
     private BroadcasterFactory broadcasterFactory;
         
-    @Inject 
     private RepositoryDAO repositoryDAO;
 
+    @Inject
     public WebsocketHandler(RepositoryDAO repositoryDAO) {
         this.repositoryDAO = repositoryDAO;
     }
@@ -35,7 +34,6 @@ public class WebsocketHandler implements AtmosphereHandler {
         atmosphereResource.suspend();
         
         broadcastData(broadcasterFactory, data);
-        startDataUpdate();
     }
 
     private boolean isBroadcast(AtmosphereResourceEvent event) {
@@ -73,7 +71,7 @@ public class WebsocketHandler implements AtmosphereHandler {
         getBroadcaster(broadcasterFactory).broadcast(data);
     }
 
-    private void startDataUpdate() {
+    public void startDataUpdate(String username) {
         if(timer != null){
             return;
         }
@@ -83,7 +81,7 @@ public class WebsocketHandler implements AtmosphereHandler {
             public void run()
             {
                 try {
-                    String newData = new ObjectMapper().writeValueAsString(new GithubAnalysis(repositoryDAO.listLanguageCount()));
+                    String newData = new ObjectMapper().writeValueAsString(new GithubAnalysis(repositoryDAO.listLanguageCount(username)));
 
                     if(!newData.equals(data) && broadcasterFactory != null && broadcasterFactory.lookupAll().size() > 0) {
                         broadcastData(broadcasterFactory, newData);

@@ -49,7 +49,7 @@ function SearchBar(props) {
                         onChange={handleUpdate.bind(this)}
                         inputProps={{ 'aria-label': 'search' }}
                     />
-                <IconButton className={classes.iconButton} aria-label="search" onClick={() => {props.handleSearch.bind(this, value)}}>
+                <IconButton className={classes.iconButton} aria-label="search" onClick={props.handleSearch.bind(this, value)}>
                     <SearchIcon />
                 </IconButton>
             </Paper>

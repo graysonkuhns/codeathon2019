@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, Grid, Typography, Slide, Card, CardContent } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Search from "../Search";
@@ -46,10 +46,32 @@ const useStyles = makeStyles(theme => ({
 function ChartDisplay(props) {
     const classes = useStyles();
 
-    let data;
-    if (props.data && props.data.repositoryLanguages) {
-        const langs = props.data.repositoryLanguages;
-        data = Object.keys(langs).map(key => [key, langs[key]]);
+    const [freezeData, setFreezeData] = useState(false);
+    const [data, setData] = useState();
+
+    useEffect(() => {
+        if (!data) {
+            updateData();
+        }
+    });
+
+    function updateData() {
+        if (props.data && props.data.repositoryLanguages && !freezeData) {
+            const langs = props.data.repositoryLanguages;
+            setData(Object.keys(langs).map(key => [key, langs[key]]));
+        }
+    }
+
+    function handleSearch(username) {
+        if (!!data) {
+            setFreezeData(true);
+            setTimeout(() => {
+                setData(undefined);
+                setFreezeData(false);
+            }, 1000)
+        }
+
+        props.handleSearch(username);
     }
 
     return (
@@ -61,11 +83,11 @@ function ChartDisplay(props) {
             </Grid>
             <Grid justify="center" container>
                 <Grid item>
-                    <Search handleSearch={props.handleSearch} className={classes.searchBar} />
+                    <Search handleSearch={handleSearch} className={classes.searchBar} />
                 </Grid>
             </Grid>
-            <Slide in={!!data && data.length > 0} timeout={1000} direction="up">
-                
+            <Slide in={!!data && data.length > 0 && !freezeData} timeout={1000} direction="up">
+
                 <Grid justify="center" container spacing={3}>
                     <Grid item xs={12} md={12} lg={6}>
                         <Card className={classes.card}>

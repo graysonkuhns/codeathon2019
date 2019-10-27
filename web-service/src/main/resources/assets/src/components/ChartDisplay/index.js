@@ -143,6 +143,7 @@ function ChartDisplay(props) {
         props.handleSearch(username);
     }
 
+    let user = props.user;
     return (
         <Paper className={classes.paper}>
             <Grid justify="center" container>
@@ -160,7 +161,7 @@ function ChartDisplay(props) {
                     <Slide in={oldProps && oldProps.data && !freezeData} timeout={1000} direction="up">
                         <Grid justify="center" container spacing={3}>
                             <ProfileInfo
-                                className={classes.profile} avatarUrl="https://avatars1.githubusercontent.com/u/11879736?v=4" bio="Full-Stack Javascript Development. Computer Science Graduate Student at the University of Central Missouri. " />
+                                className={classes.profile} name={user.name} avatarUrl={user.avatar_url} bio={user.bio} />
                             <Grid item xs={12} md={12} lg={6}>
                                 <Card className={classes.card}>
                                     <CardContent>
@@ -192,7 +193,9 @@ function ChartDisplay(props) {
                     :
                     (
                         clicked &&
-                        <CircularProgress />
+                        <Grid container justify="center">
+                            <CircularProgress />
+                        </Grid>
                     )
             }
         </Paper>

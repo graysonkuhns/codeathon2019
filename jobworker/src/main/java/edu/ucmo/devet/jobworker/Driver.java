@@ -2,9 +2,8 @@ package edu.ucmo.devet.jobworker;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import edu.ucmo.devet.jobworker.collection.RepositoryLanguageCollector;
-import edu.ucmo.devet.jobworker.github.api.RepositoryLanguageRetriever;
-import edu.ucmo.devet.model.Repository;
+import edu.ucmo.devet.jobworker.collection.RepositoriesCollector;
+import edu.ucmo.devet.model.User;
 
 public class Driver {
 
@@ -12,9 +11,7 @@ public class Driver {
     // Create the dependency injector
     Injector injector = Guice.createInjector(new JobWorkerModule());
 
-    Repository repo = new Repository(1, "graysonkuhns", "codeathon2019");
-
-    RepositoryLanguageCollector languageCollector = injector.getInstance(RepositoryLanguageCollector.class);
-    languageCollector.collect(repo);
+    RepositoriesCollector repositoriesCollector = injector.getInstance(RepositoriesCollector.class);
+    repositoriesCollector.collect(new User("graysonkuhns"));
   }
 }

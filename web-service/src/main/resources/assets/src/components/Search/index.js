@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -1,6 +1,7 @@
 package edu.ucmo.devet.jobworker.github.api;
 
 import com.google.inject.AbstractModule;
+import edu.ucmo.devet.jobworker.collection.CommitLanguageCollector;
 import org.kohsuke.github.GitHub;
 
 public class GitHubModule extends AbstractModule {
@@ -12,6 +13,11 @@ public class GitHubModule extends AbstractModule {
 
     // Language stats retriever
     bind(RepositoryLanguageRetriever.class)
-        .to(KohsukeRepositoryLanguageRetriever.class);
+            .to(KohsukeRepositoryLanguageRetriever.class);
+
+    // Commit language stats retriever
+    bind(CommitLanguageRetriever.class)
+            .to(KohsukeCommitLanguageRetriever.class);
+
   }
 }

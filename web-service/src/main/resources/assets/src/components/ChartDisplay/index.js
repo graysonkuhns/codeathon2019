@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, Slide, Card, CardContent } from '@material-ui/core';
+import { Avatar, Grid, Typography, Slide, Card, CardContent } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Search from "../Search";
 import Title from "../Title";
@@ -22,6 +22,14 @@ const useStyles = makeStyles(theme => ({
     card: {
         paddingTop: "2rem",
         paddingBottom: "3rem"
+    },
+    bigAvatar: {
+        margin: 10,
+        width: 60,
+        height: 60,
+    },
+    searchBar: {
+        marginTop: "2rem"
     }
 
 }));
@@ -53,10 +61,11 @@ function ChartDisplay(props) {
             </Grid>
             <Grid justify="center" container>
                 <Grid item>
-                    <Search handleSearch={props.handleSearch} />
+                    <Search handleSearch={props.handleSearch} className={classes.searchBar} />
                 </Grid>
             </Grid>
             <Slide in={!!data && data.length > 0} timeout={1000} direction="up">
+                
                 <Grid justify="center" container spacing={3}>
                     <Grid item xs={12} md={12} lg={6}>
                         <Card className={classes.card}>

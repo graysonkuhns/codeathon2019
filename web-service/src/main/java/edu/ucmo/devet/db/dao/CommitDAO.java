@@ -20,10 +20,6 @@ public class CommitDAO {
 
     public Map<String, Integer> listCommitLanguageCount(String username){
         Map<String, Integer> languageCount = new HashMap<>();
-
-        // Init the map with every language
-        languageDAO.list()
-            .forEach(language -> languageCount.put(language.getName(), 0));
         
         jdbi.useHandle(handle -> handle
             .createQuery("SELECT l.name, rl.file_count FROM commit_language AS rl JOIN language AS l " +

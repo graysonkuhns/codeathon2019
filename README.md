@@ -13,6 +13,12 @@ Entering a valid GitHub username will return relavant information about that acc
 * [Atmosphere](https://github.com/Atmosphere/atmosphere) - WebSocket Library
 * [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - Microservice Framwork
 
+## Acknowledgments
+---
+* The Kansas City Fedral Reserve
+* Professor Belinda Copus
+* Perry Copus
+* Dr. Mahmoud Yousef
 
 ## Authors
 ---
@@ -20,13 +26,5 @@ Entering a valid GitHub username will return relavant information about that acc
 * **Jon Bockhorst** - [jmbockhorst](https://github.com/jmbockhorst)
 * **Grayson Kuhns** - [graysonkuhns](https://github.com/graysonkuhns)
 * **Nick Stamos** - [ItsNicholas22](https://github.com/ItsNicholas22)
-
-
-## Acknowledgments
----
-* The Kansas City Fedral Reserve
-* Professor Belinda Copus
-* Perry Copus
-* Dr. Mahmoud Yousef
 
 ![team](team.jpg)

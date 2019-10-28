@@ -5,6 +5,8 @@ DeVet is a tool used to research what languages a potential employee is proficia
 
 Entering a valid GitHub username will return relavant information about that account. Information displayed includes the percentage of each language that make up a users repositories and the languages that make up repositories that they have contributed to. The top five starred repositories of that user are also displayed.
 
+## YouTube Video Link
+[DeVet](https://www.youtube.com/watch?v=LJFhkapj0vA)
 
 ## Built With
 ---

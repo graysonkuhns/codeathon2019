@@ -4,7 +4,6 @@ import { Grid, Typography, Slide, Card, CardContent, CircularProgress } from '@m
 import Paper from '@material-ui/core/Paper';
 import Search from '../Search';
 import Title from '../Title';
-import Info from '../Info';
 import ProfileInfo from '../ProfileInfo'
 import { makeStyles } from '@material-ui/core/styles';
 import "chart.js";
@@ -102,7 +101,9 @@ function ChartDisplay(props) {
                 /** @type {number[][]} */
                 const oldData = data2;
 
-                if (oldData) {
+                if (!oldData) {
+                    setData2(newData);
+                } else {
                     newData.forEach(d => {
                         // If the language already exists
                         const oldLang = oldData.find(lang => lang[0] == d[0]);
@@ -114,8 +115,6 @@ function ChartDisplay(props) {
                     });
 
                     setData2(oldData);
-                } else {
-                    setData2(newData);
                 }
             }
 
@@ -128,13 +127,13 @@ function ChartDisplay(props) {
      */
     function handleSearch(username) {
         setClicked(true);
-
+        console.log("test7");
         if (props.data) {
             setFreezeData(true);
             setTimeout(() => {
-                setOldProps(undefined);
-                setData1(undefined);
+                //setData1(undefined);
                 setData2(undefined);
+                setOldProps(null);
                 setFreezeData(false);
                 updateData();
             }, 1000);
@@ -143,6 +142,7 @@ function ChartDisplay(props) {
         props.handleSearch(username);
     }
 
+    let user = props.user;
     return (
         <Paper className={classes.paper}>
             <Grid justify="center" container>
@@ -160,7 +160,7 @@ function ChartDisplay(props) {
                     <Slide in={oldProps && oldProps.data && !freezeData} timeout={1000} direction="up">
                         <Grid justify="center" container spacing={3}>
                             <ProfileInfo
-                                className={classes.profile} avatarUrl="https://avatars1.githubusercontent.com/u/11879736?v=4" bio="Full-Stack Javascript Development. Computer Science Graduate Student at the University of Central Missouri. " />
+                                className={classes.profile} name={user.name} avatarUrl={user.avatar_url} bio={user.bio} />
                             <Grid item xs={12} md={12} lg={6}>
                                 <Card className={classes.card}>
                                     <CardContent>
@@ -180,19 +180,24 @@ function ChartDisplay(props) {
                             </Grid>
 
                             <Grid item xs={12} md={12} lg={6}>
-                                {
-                                    props.data.topRepositories.map(repo => {
-                                        return repo.name;
-                                    })
-                                }
+                                <Paper>
+                                    {
+                                        props.data.topRepositories.map((repo, i) => {
+                                            return (
+                                                <Title key={i++}>repo.name</Title>
+                                            )
+                                        })
+                                    }
+                                </Paper>
                             </Grid>
-                            <Info />
                         </Grid>
                     </Slide>
                     :
                     (
                         clicked &&
-                        <CircularProgress />
+                        <Grid container justify="center">
+                            <CircularProgress />
+                        </Grid>
                     )
             }
         </Paper>

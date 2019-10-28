@@ -16,6 +16,11 @@ class App extends React.Component {
 
         this.state = {
             data: undefined,
+            user: {
+                name: "",
+                avatar_url: "",
+                bio: ""
+            }
         }
         this.handleSearch = this.handleSearch.bind(this);
     }
@@ -30,6 +35,10 @@ class App extends React.Component {
      */
     handleSearch(username) {
         sendGithubAnalysisRequest(username);
+        Axios.get(`https://api.github.com/users/${username}`)
+            .then((response) => {
+                this.setState({ user: { name: response.data.name, avatar_url: response.data.avatar_url, bio: response.data.bio } });
+            })
     }
 
     /**
@@ -46,7 +55,7 @@ class App extends React.Component {
             <div style={{ background: BackGround, backgroundRepeat: "repeat" }}>
                 <CssBaseline />
                 <NavBar />
-                <ChartDisplay data={this.state.data} handleSearch={this.handleSearch} />
+                <ChartDisplay data={this.state.data} handleSearch={this.handleSearch} user={this.state.user} />
             </div>
         )
     }

@@ -24,7 +24,7 @@ public class DefaultCommitLanguageCollector implements CommitLanguageCollector {
 
     @Override
     public void collect(Repository repo, Commit commit) {
-        final Map<String, Integer> languageStats = commitLanguageRetriever.getLanguages(repo, commit);
+        final Map<Integer, Integer> languageStats = commitLanguageRetriever.getLanguages(repo, commit);
 
         // Insert into commit languages
         jdbi.useHandle(handle -> {

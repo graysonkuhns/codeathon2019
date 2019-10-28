@@ -29,4 +29,4 @@ Entering a valid GitHub username will return relavant information about that acc
 * Perry Copus
 * Dr. Mahmoud Yousef
 
-![team]('./team.jpg')
+![team]('team.jpg')
